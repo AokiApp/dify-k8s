@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qdrant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qdrant
+  template:
+    metadata:
+      labels:
+        app: qdrant
+    spec:
+      containers:
+      - name: qdrant
+        image: langgenius/qdrant:v1.7.3
+        envFrom:
+        - secretRef:
+            name: shared-secrets
+        volumeMounts:
+        - name: qdrant-data
+          mountPath: /qdrant/storage
+      volumes:
+      - name: qdrant-data
+        persistentVolumeClaim:
+          claimName: qdrant-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qdrant
+spec:
+  selector:
+    app: qdrant
+  ports:
+    - protocol: TCP
+      port: 6333
+      targetPort: 6333
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qdrant-storage
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

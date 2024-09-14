@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ssrf-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ssrf-proxy
+  template:
+    metadata:
+      labels:
+        app: ssrf-proxy
+    spec:
+      containers:
+      - name: ssrf-proxy
+        image: ubuntu/squid:latest
+        volumeMounts:
+        - name: squid-config
+          mountPath: /etc/squid/squid.conf.template
+          subPath: squid.conf.template
+        - name: entrypoint
+          mountPath: /docker-entrypoint-mount.sh
+          subPath: docker-entrypoint.sh
+        env:
+        - name: HTTP_PORT
+          value: "3128"
+        - name: COREDUMP_DIR
+          value: "/var/spool/squid"
+        - name: REVERSE_PROXY_PORT
+          value: "8194"
+        - name: SANDBOX_HOST
+          value: "sandbox"
+        - name: SANDBOX_PORT
+          value: "8194"
+        command: [ "sh", "-c", "cp /docker-entrypoint-mount.sh /docker-entrypoint.sh && sed -i 's/\r$//' /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh && /docker-entrypoint.sh" ]
+      volumes:
+      - name: squid-config
+        configMap:
+          name: squid-config
+          items:
+            - key: squid.conf.template
+              path: squid.conf.template
+      - name: entrypoint
+        configMap:
+          name: squid-entrypoint
+          items:
+            - key: docker-entrypoint.sh
+              path: docker-entrypoint.sh
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ssrf-proxy
+spec:
+  selector:
+    app: ssrf-proxy
+  ports:
+    - protocol: TCP
+      port: 3128
+      targetPort: 3128

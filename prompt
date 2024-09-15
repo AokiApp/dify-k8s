@@ -1,3 +1,0 @@
-You must analyze the current directory before that.
-next, You must delete the unused PVCs and PVs.
-dont make docker-compose.yml file

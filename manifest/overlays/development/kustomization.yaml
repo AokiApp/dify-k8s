@@ -1,19 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: dify
-resources:
-  - namespace.yaml
-  - pvc.yaml
-  - api.yaml
-  - worker.yaml
-  - web.yaml
-  - redis.yaml
-  - sandbox.yaml
-  - ssrf_proxy.yaml
-  - qdrant.yaml
-  - ingress.yaml
+
+bases:
+  - ../../base
+
 configMapGenerator:
   - name: shared-config
+    behavior: merge
     envs:
       - configmap.env
 secretGenerator:

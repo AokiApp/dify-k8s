@@ -31,7 +31,7 @@ spec:
       volumes:
         - name: storage
           persistentVolumeClaim:
-            claimName: worker-storage
+            claimName: shared-storage
 
 ---
 apiVersion: v1

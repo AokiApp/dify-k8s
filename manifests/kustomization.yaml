@@ -9,8 +9,10 @@ resources:
   - redis.yaml
   - sandbox.yaml
   - ssrf_proxy.yaml
+  - pvc.yaml
   - qdrant.yaml
   - ingress.yaml
+  - pvc.yaml
 configMapGenerator:
   - name: shared-config
     envs:

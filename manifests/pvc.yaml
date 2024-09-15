@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-storage
+spec:
+  storageClassName: satahdd-replicated-cephfs-sc-01
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 512Mi

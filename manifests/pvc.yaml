@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: shared-storage
+  name: api-storage
 spec:
   storageClassName: satahdd-replicated-cephfs-sc-01
   accessModes:

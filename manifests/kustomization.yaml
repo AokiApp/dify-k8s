@@ -3,16 +3,15 @@ kind: Kustomization
 namespace: dify
 resources:
   - namespace.yaml
+  - pvc.yaml
   - api.yaml
   - worker.yaml
   - web.yaml
   - redis.yaml
   - sandbox.yaml
   - ssrf_proxy.yaml
-  - pvc.yaml
   - qdrant.yaml
   - ingress.yaml
-  - pvc.yaml
 configMapGenerator:
   - name: shared-config
     envs:

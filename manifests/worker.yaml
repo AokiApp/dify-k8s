@@ -31,7 +31,7 @@ spec:
       volumes:
         - name: storage
           persistentVolumeClaim:
-            claimName: shared-storage
+            claimName: api-storage
 
 ---
 apiVersion: v1
@@ -44,16 +44,3 @@ spec:
       targetPort: 5001
   selector:
     app: worker
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: worker-storage
-spec:
-  storageClassName: satahdd-replicated-cephfs-sc-01
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 512Mi

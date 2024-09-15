@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sandbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sandbox
+  template:
+    metadata:
+      labels:
+        app: sandbox
+    spec:
+      containers:
+        - name: sandbox
+          image: langgenius/dify-sandbox:0.2.9
+          ports:
+            - containerPort: 8194
+          env:
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: shared-secret
+                  key: SANDBOX_API_KEY
+            - name: WORKER_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: SANDBOX_WORKER_TIMEOUT
+            - name: ENABLE_NETWORK
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: SANDBOX_ENABLE_NETWORK
+            - name: HTTP_PROXY
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: SANDBOX_HTTP_PROXY
+            - name: HTTPS_PROXY
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: SANDBOX_HTTPS_PROXY
+            - name: SANDBOX_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: SANDBOX_PORT
+
+          volumeMounts:
+            - name: dependencies
+              mountPath: /dependencies
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8194
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: dependencies
+          persistentVolumeClaim:
+            claimName: sandbox-dependencies
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sandbox
+spec:
+  ports:
+    - port: 8194
+      targetPort: 8194
+  selector:
+    app: sandbox
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sandbox-dependencies
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 512Mi

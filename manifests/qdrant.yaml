@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qdrant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qdrant
+  template:
+    metadata:
+      labels:
+        app: qdrant
+    spec:
+      containers:
+        - name: qdrant
+          image: langgenius/qdrant:v1.7.3
+          ports:
+            - containerPort: 6333
+          envFrom:
+            - secretRef:
+                name: shared-secret
+          volumeMounts:
+            - name: qdrant-storage
+              mountPath: /qdrant/storage
+      volumes:
+        - name: qdrant-storage
+          persistentVolumeClaim:
+            claimName: qdrant-storage
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qdrant
+spec:
+  ports:
+    - port: 6333
+      targetPort: 6333
+  selector:
+    app: qdrant
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qdrant-storage
+spec:
+  storageClassName: satahdd-replicated-rbd-sc-01
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 512Mi

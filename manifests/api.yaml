@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: langgenius/dify-api:0.8.2
+          ports:
+            - containerPort: 5001
+          envFrom:
+            - configMapRef:
+                name: shared-config
+            - secretRef:
+                name: shared-secret
+          env:
+            - name: MODE
+              value: "api"
+          volumeMounts:
+            - name: storage
+              mountPath: /app/api/storage
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: api-storage
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+spec:
+  ports:
+    - port: 5001
+      targetPort: 5001
+  selector:
+    app: api
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: api-storage
+spec:
+  storageClassName: satahdd-replicated-cephfs-sc-01
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 512Mi

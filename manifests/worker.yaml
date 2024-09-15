@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: langgenius/dify-api:0.8.2
+          ports:
+            - containerPort: 5001
+          envFrom:
+            - configMapRef:
+                name: shared-config
+            - secretRef:
+                name: shared-secret
+          env:
+            - name: MODE
+              value: "worker"
+          volumeMounts:
+            - name: storage
+              mountPath: /app/api/storage
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: worker-storage
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: worker
+spec:
+  ports:
+    - port: 5001
+      targetPort: 5001
+  selector:
+    app: worker
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: worker-storage
+spec:
+  storageClassName: satahdd-replicated-cephfs-sc-01
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 512Mi

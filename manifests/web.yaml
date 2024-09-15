@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: langgenius/dify-web:0.8.2
+          ports:
+            - containerPort: 3000
+          env:
+            - name: CONSOLE_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: CONSOLE_API_URL
+            - name: APP_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: APP_API_URL
+            - name: NEXT_TELEMETRY_DISABLED
+              value: "0"
+            - name: TEXT_GENERATION_TIMEOUT_MS
+              value: "60000"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: web

@@ -17,9 +17,13 @@ spec:
           image: langgenius/qdrant:v1.7.3
           ports:
             - containerPort: 6333
-          envFrom:
-            - secretRef:
-                name: shared-secret
+          env:
+            - name: QDRANT_API_KEY
+              # load from secret
+              valueFrom:
+                secretKeyRef:
+                  name: shared-secret
+                  key: QDRANT_API_KEY
           volumeMounts:
             - name: qdrant-storage
               mountPath: /qdrant/storage

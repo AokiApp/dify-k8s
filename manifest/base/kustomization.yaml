@@ -15,6 +15,5 @@ resources:
 
 configMapGenerator:
   - name: shared-config
-    behavior: merge
     envs:
       - configmap.env

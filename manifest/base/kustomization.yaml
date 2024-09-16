@@ -9,7 +9,6 @@ resources:
   - web.yaml
   - redis.yaml
   - sandbox.yaml
-  - ssrf_proxy.yaml
   - qdrant.yaml
   - ingress.yaml
 

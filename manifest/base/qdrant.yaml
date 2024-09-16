@@ -4,6 +4,8 @@ metadata:
   name: qdrant
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: qdrant

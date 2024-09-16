@@ -60,8 +60,7 @@ spec:
             periodSeconds: 5
       volumes:
         - name: dependencies
-          persistentVolumeClaim:
-            claimName: sandbox-dependencies
+          emptyDir: {}
 
 ---
 apiVersion: v1
@@ -74,15 +73,3 @@ spec:
       targetPort: 8194
   selector:
     app: sandbox
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sandbox-dependencies
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 512Mi

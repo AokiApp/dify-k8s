@@ -25,6 +25,12 @@ spec:
           env:
             - name: MODE
               value: "api"
+            # name differs between the two files
+            - name: CODE_EXECUTION_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: shared-secret
+                  key: SANDBOX_API_KEY
           volumeMounts:
             - name: storage
               mountPath: /app/api/storage

@@ -56,11 +56,6 @@ spec:
                 configMapKeyRef:
                   name: shared-config
                   key: PLUGIN_MAX_PACKAGE_SIZE
-            - name: INNER_API_KEY_FOR_PLUGIN
-              valueFrom:
-                secretKeyRef:
-                  name: shared-secret
-                  key: PLUGIN_DIFY_INNER_API_KEY
           volumeMounts:
             - name: storage
               mountPath: /app/api/storage

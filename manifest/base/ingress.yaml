@@ -42,6 +42,20 @@ spec:
                 name: api
                 port:
                   number: 5001
+          - path: /e/
+            pathType: Prefix
+            backend:
+              service:
+                name: plugin_daemon
+                port:
+                  number: 5002
+          - path: /explore
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 3000
           - path: /
             pathType: Prefix
             backend:

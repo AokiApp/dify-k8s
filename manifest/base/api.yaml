@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: langgenius/dify-api:0.15.0
+          image: langgenius/dify-api:1.0.0
           ports:
             - containerPort: 5001
           envFrom:
@@ -26,11 +26,41 @@ spec:
             - name: MODE
               value: "api"
             # name differs between the two files
-            - name: CODE_EXECUTION_API_KEY
+            - name: SENTRY_DSN
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: API_SENTRY_DSN
+            - name: SENTRY_TRACES_SAMPLE_RATE
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: API_SENTRY_TRACES_SAMPLE_RATE
+            - name: SENTRY_PROFILES_SAMPLE_RATE
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: API_SENTRY_PROFILES_SAMPLE_RATE
+            - name: PLUGIN_REMOTE_INSTALL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: EXPOSE_PLUGIN_DEBUGGING_HOST
+            - name: PLUGIN_REMOTE_INSTALL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: EXPOSE_PLUGIN_DEBUGGING_PORT
+            - name: PLUGIN_MAX_PACKAGE_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: PLUGIN_MAX_PACKAGE_SIZE
+            - name: INNER_API_KEY_FOR_PLUGIN
               valueFrom:
                 secretKeyRef:
                   name: shared-secret
-                  key: SANDBOX_API_KEY
+                  key: PLUGIN_DIFY_INNER_API_KEY
           volumeMounts:
             - name: storage
               mountPath: /app/api/storage

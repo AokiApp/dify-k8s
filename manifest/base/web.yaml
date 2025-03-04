@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: langgenius/dify-web:0.15.0
+          image: langgenius/dify-web:1.0.0
           ports:
             - containerPort: 3000
           env:
@@ -28,10 +28,43 @@ spec:
                 configMapKeyRef:
                   name: shared-config
                   key: APP_API_URL
+            - name: SENTRY_DSN
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: WEB_SENTRY_DSN
             - name: NEXT_TELEMETRY_DISABLED
-              value: "0"
+              value: "1"
             - name: TEXT_GENERATION_TIMEOUT_MS
-              value: "60000"
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: TEXT_GENERATION_TIMEOUT_MS
+            - name: CSP_WHITELIST
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: CSP_WHITELIST
+            - name: MARKETPLACE_API_URL
+              value: "https://marketplace.dify.ai"
+            - name: MARKETPLACE_URL
+              value: "https://marketplace.dify.ai"
+            - name: MARKETPLACE_ENABLED
+            - name: TOP_K_MAX_VALUE
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: TOP_K_MAX_VALUE
+            - name: INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH
+            - name: PM2_INSTANCES
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: PM2_INSTANCES
 
 ---
 apiVersion: v1

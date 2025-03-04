@@ -11,6 +11,7 @@ resources:
   - sandbox.yaml
   - qdrant.yaml
   - ingress.yaml
+  - plugin-daemon.yaml
 
 configMapGenerator:
   - name: shared-config

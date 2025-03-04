@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: langgenius/dify-api:0.15.0
+          image: langgenius/dify-api:1.0.0
           ports:
             - containerPort: 5001
           envFrom:
@@ -25,6 +25,31 @@ spec:
           env:
             - name: MODE
               value: "worker"
+            - name: SENTRY_DSN
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: API_SENTRY_DSN
+            - name: SENTRY_TRACES_SAMPLE_RATE
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: API_SENTRY_TRACES_SAMPLE_RATE
+            - name: SENTRY_PROFILES_SAMPLE_RATE
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: API_SENTRY_PROFILES_SAMPLE_RATE
+            - name: PLUGIN_MAX_PACKAGE_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: PLUGIN_MAX_PACKAGE_SIZE
+            - name: INNER_API_KEY_FOR_PLUGIN
+              valueFrom:
+                secretKeyRef:
+                  name: shared-secret
+                  key: PLUGIN_DIFY_INNER_API_KEY
           volumeMounts:
             - name: storage
               mountPath: /app/api/storage

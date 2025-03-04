@@ -69,10 +69,7 @@ spec:
                   name: shared-config
                   key: EXPOSE_PLUGIN_DEBUGGING_PORT
             - name: PLUGIN_WORKING_PATH
-              valueFrom:
-                configMapKeyRef:
-                  name: shared-config
-                  key: PLUGIN_WORKING_PATH
+              value: /app/storage/cwd
             - name: FORCE_VERIFYING_SIGNATURE
               valueFrom:
                 configMapKeyRef:

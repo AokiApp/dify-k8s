@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: plugin-daemon
-          image: langgenius/dify-plugin-daemon:0.0.3-local
+          image: langgenius/dify-plugin-daemon:0.0.6-local
           ports:
             - containerPort: 5002
           envFrom:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: sandbox
-          image: langgenius/dify-sandbox:0.2.9
+          image: langgenius/dify-sandbox:0.2.11
           ports:
             - containerPort: 8194
           env:

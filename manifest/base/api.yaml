@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: langgenius/dify-api:1.0.0
+          image: langgenius/dify-api:1.1.3
           ports:
             - containerPort: 5001
           envFrom:
@@ -56,6 +56,11 @@ spec:
                 configMapKeyRef:
                   name: shared-config
                   key: PLUGIN_MAX_PACKAGE_SIZE
+            - name: CODE_EXECUTION_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: shared-secret
+                  key: SANDBOX_API_KEY
           volumeMounts:
             - name: storage
               mountPath: /app/api/storage

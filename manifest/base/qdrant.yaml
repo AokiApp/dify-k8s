@@ -52,7 +52,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: qdrant-storage
 spec:
-  storageClassName: satahdd-replicated-rbd-sc-01
   accessModes:
     - ReadWriteOnce
   resources:

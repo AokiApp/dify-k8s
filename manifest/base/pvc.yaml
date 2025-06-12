@@ -3,7 +3,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: plugin-daemon-storage
 spec:
-  storageClassName: satahdd-replicated-cephfs-sc-01
   accessModes:
     - ReadWriteMany
   resources:

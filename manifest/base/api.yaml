@@ -61,13 +61,6 @@ spec:
                 secretKeyRef:
                   name: shared-secret
                   key: SANDBOX_API_KEY
-          volumeMounts:
-            - name: storage
-              mountPath: /app/api/storage
-      volumes:
-        - name: storage
-          persistentVolumeClaim:
-            claimName: api-storage
 
 ---
 apiVersion: v1

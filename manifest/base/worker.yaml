@@ -45,13 +45,6 @@ spec:
                 configMapKeyRef:
                   name: shared-config
                   key: PLUGIN_MAX_PACKAGE_SIZE
-          volumeMounts:
-            - name: storage
-              mountPath: /app/api/storage
-      volumes:
-        - name: storage
-          persistentVolumeClaim:
-            claimName: api-storage
 
 ---
 apiVersion: v1

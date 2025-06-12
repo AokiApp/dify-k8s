@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: langgenius/dify-web:1.4.0
+          image: langgenius/dify-web:1.4.2
           ports:
             - containerPort: 3000
           env:

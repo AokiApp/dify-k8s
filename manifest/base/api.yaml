@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: langgenius/dify-api:1.4.0
+          image: langgenius/dify-api:1.4.2
           ports:
             - containerPort: 5001
           envFrom:

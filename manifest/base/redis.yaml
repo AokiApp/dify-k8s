@@ -24,13 +24,6 @@ spec:
                 secretKeyRef:
                   name: shared-secret
                   key: REDIS_PASSWORD
-          volumeMounts:
-            - name: redis-data
-              mountPath: /data
-      volumes:
-        - name: redis-data
-          persistentVolumeClaim:
-            claimName: redis-data
 
 ---
 apiVersion: v1
@@ -43,15 +36,3 @@ spec:
       targetPort: 6379
   selector:
     app: redis
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: redis-data
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 512Mi

@@ -78,10 +78,14 @@ spec:
           volumeMounts:
             - name: plugin-daemon-storage
               mountPath: /app/storage
+            - name: cwd
+              mountPath: /app/storage/cwd
       volumes:
         - name: plugin-daemon-storage
           persistentVolumeClaim:
             claimName: plugin-daemon-storage
+        - name: cwd
+          emptyDir: {}
 
 ---
 apiVersion: v1

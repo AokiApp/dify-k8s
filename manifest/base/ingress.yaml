@@ -28,13 +28,6 @@ spec:
                 name: api
                 port:
                   number: 5001
-          - path: /files
-            pathType: Prefix
-            backend:
-              service:
-                name: api
-                port:
-                  number: 5001
           - path: /e/
             pathType: Prefix
             backend:
@@ -87,3 +80,10 @@ spec:
                 name: web
                 port:
                   number: 3000
+          - path: /files
+            pathType: Prefix
+            backend:
+              service:
+                name: api
+                port:
+                  number: 5001
